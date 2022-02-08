@@ -1,19 +1,8 @@
-FROM ubuntu:latest
-#MAINTAINER kabelo.shongwe@standardbank.co.za
+FROM python:3.8.2-slim
 
-RUN apt-get update
-RUN apt-get install -y python
-RUN apt-get install -y pip
-RUN pip install mlflow 
-RUN pip install sklearn
-
-
-RUN mkdir -p /mlflow
-WORKDIR /mlflow
-COPY main.py /mlflow/
-COPY run.sh /mlflow/
-RUN chmod +x /mlflow/run.sh
+RUN pip install psycopg2-binary==2.8.5 && \
+    pip install mlflow[extras]==1.9.1
 
 EXPOSE 5000
 
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["mlflow", "server"]
